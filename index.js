@@ -17,7 +17,20 @@ async function movieInfoDetail(movie) {
   const res = await fetch(
     `http://www.omdbapi.com/?apikey=1d02aaa5&i=${movie.imdbID}`
   );
-  const movieDetail = await res.json();
+  const moviesDetail = await res.json();
 
-  console.log(movieDetail);
+  renderMovie(moviesDetail);
+}
+
+function renderMovie(moviesDetail) {
+  const poster = moviesDetail.Poster;
+  const title = moviesDetail.Title;
+  const rating = moviesDetail.imdbRating;
+  const time = moviesDetail.Runtime;
+  const genre = moviesDetail.Genre;
+  const plot = moviesDetail.Plot;
+
+  const addBtn = document.createElement('a');
+
+  console.log(poster, title, rating, time, genre, plot);
 }
