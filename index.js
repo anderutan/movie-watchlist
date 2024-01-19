@@ -1,5 +1,6 @@
 const searchBtn = document.querySelector('.search-btn');
 const searchName = document.getElementById('search-bar');
+const container = document.querySelector('.container');
 
 searchBtn.addEventListener('click', async () => {
   const res = await fetch(
@@ -7,6 +8,8 @@ searchBtn.addEventListener('click', async () => {
   );
   const searchMovieResult = await res.json();
   const searchMovieList = searchMovieResult.Search;
+
+  container.textContent = '';
 
   for (let movie in searchMovieList) {
     movieInfoDetail(searchMovieList[movie]);
@@ -56,8 +59,8 @@ function renderMovie(moviesDetail) {
   const genre = moviesDetail.Genre;
   const plot = moviesDetail.Plot;
 
-  const divMovieSection = document.createElement('div');
-  divMovieSection.classList.add('movie-section');
+  const movieSection = document.createElement('section');
+  movieSection.classList.add('movie-section');
 
   const posterImg = document.createElement('img');
   posterImg.src = poster;
@@ -77,7 +80,8 @@ function renderMovie(moviesDetail) {
 
   const movieRating = document.createElement('p');
   movieRating.classList.add('movie-rating');
-  movieRating.textContent = `${starIcon}${rating}`;
+  movieRating.appendChild(starIcon);
+  movieRating.insertAdjacentHTML('beforeend', `${rating}`);
 
   const divMovieOtherInfo = document.createElement('div');
   divMovieOtherInfo.classList.add('movie-other-info');
@@ -95,7 +99,8 @@ function renderMovie(moviesDetail) {
 
   const addToWatchlistLink = document.createElement('a');
   addToWatchlistLink.classList.add('watchlist-btn');
-  addToWatchlistLink.textContent = `${addToWatchlistBtn}Add to watchlist`;
+  addToWatchlistLink.appendChild(addToWatchlistBtn);
+  addToWatchlistLink.insertAdjacentHTML('beforeend', ' Add to watchlist');
 
   const moviePlot = document.createElement('p');
   moviePlot.classList.add('movie-plot');
@@ -112,8 +117,8 @@ function renderMovie(moviesDetail) {
   divMovieInfoSection.appendChild(divMovieOtherInfo);
   divMovieInfoSection.appendChild(moviePlot);
 
-  divMovieSection.appendChild(posterImg);
-  divMovieSection.appendChild(divMovieInfoSection);
+  movieSection.appendChild(posterImg);
+  movieSection.appendChild(divMovieInfoSection);
 
-  return divMovieInfoSection;
+  container.appendChild(movieSection);
 }

@@ -133,9 +133,10 @@ body {
 
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  padding-top: 2em;
 }
 
 /* if no movie on list then show up */
@@ -174,6 +175,7 @@ body {
 
 .movie-section > img {
   height: 20vh;
+  width: 13.5vh;
 }
 
 .movie-info-section {
