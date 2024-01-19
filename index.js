@@ -56,7 +56,64 @@ function renderMovie(moviesDetail) {
   const genre = moviesDetail.Genre;
   const plot = moviesDetail.Plot;
 
-  const addBtn = document.createElement('a');
+  const divMovieSection = document.createElement('div');
+  divMovieSection.classList.add('movie-section');
 
-  console.log(poster, title, rating, time, genre, plot);
+  const posterImg = document.createElement('img');
+  posterImg.src = poster;
+
+  const divMovieInfoSection = document.createElement('div');
+  divMovieInfoSection.classList.add('movie-info-section');
+
+  const divMovieNameRate = document.createElement('div');
+  divMovieNameRate.classList.add('movie-name-rate');
+
+  const movieTitle = document.createElement('h3');
+  movieTitle.classList.add('movie-title');
+  movieTitle.textContent = title;
+
+  const starIcon = document.createElement('img');
+  starIcon.src = 'images/star.svg';
+
+  const movieRating = document.createElement('p');
+  movieRating.classList.add('movie-rating');
+  movieRating.textContent = `${starIcon}${rating}`;
+
+  const divMovieOtherInfo = document.createElement('div');
+  divMovieOtherInfo.classList.add('movie-other-info');
+
+  const movieRuntime = document.createElement('p');
+  movieRuntime.classList.add('movie-runtime');
+  movieRuntime.textContent = time;
+
+  const movieGenre = document.createElement('p');
+  movieGenre.classList.add('movie-genre');
+  movieGenre.textContent = genre;
+
+  const addToWatchlistBtn = document.createElement('img');
+  addToWatchlistBtn.src = 'images/add-circle.svg';
+
+  const addToWatchlistLink = document.createElement('a');
+  addToWatchlistLink.classList.add('watchlist-btn');
+  addToWatchlistLink.textContent = `${addToWatchlistBtn}Add to watchlist`;
+
+  const moviePlot = document.createElement('p');
+  moviePlot.classList.add('movie-plot');
+  moviePlot.textContent = plot;
+
+  divMovieNameRate.appendChild(movieTitle);
+  divMovieNameRate.appendChild(movieRating);
+
+  divMovieOtherInfo.appendChild(movieRuntime);
+  divMovieOtherInfo.appendChild(movieGenre);
+  divMovieOtherInfo.appendChild(addToWatchlistLink);
+
+  divMovieInfoSection.appendChild(divMovieNameRate);
+  divMovieInfoSection.appendChild(divMovieOtherInfo);
+  divMovieInfoSection.appendChild(moviePlot);
+
+  divMovieSection.appendChild(posterImg);
+  divMovieSection.appendChild(divMovieInfoSection);
+
+  return divMovieInfoSection;
 }
