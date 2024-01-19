@@ -108,7 +108,7 @@ body {
   border-radius: 5px 0 0 5px;
 }
 
-.btn {
+.search-btn {
   flex-basis: 20%;
   box-sizing: border-box;
   background-color: #4b4b4b;
@@ -121,12 +121,12 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.btn:hover {
+.search-btn:hover {
   background-color: whitesmoke;
   color: #4b4b4b;
 }
 
-.btn:active {
+.search-btn:active {
   background-color: #333;
   color: white;
 }
@@ -138,6 +138,7 @@ body {
   height: 70vh;
 }
 
+/* if no movie on list then show up */
 .start-exploring {
   display: none;
   height: 20vh;
