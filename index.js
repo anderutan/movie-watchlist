@@ -22,6 +22,32 @@ async function movieInfoDetail(movie) {
   renderMovie(moviesDetail);
 }
 
+/* Boilerplate
+<div class="movie-section">
+        <img
+          src="https://m.media-amazon.com/images/M/MV5BNmQ0ODBhMjUtNDRhOC00MGQzLTk5MTAtZDliODg5NmU5MjZhXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"
+          alt=""
+        />
+        <div class="movie-info-section">
+          <div class="movie-name-rate">
+            <h3 class="movie-title">Harry Potter and the Sorcerer's Stone</h3>
+            <p class="movie-rating"><img src="images/star.svg" alt="" /> 7.6</p>
+          </div>
+          <div class="movie-other-info">
+            <p class="movie-runtime">152 min</p>
+            <p class="movie-genre">Adventure, Family, Fantasy</p>
+            <a href="" class="watchlist-btn"
+              ><img src="images/add-circle.svg" alt="" />Add to watchlist</a
+            >
+          </div>
+          <p class="movie-plot">
+            An orphaned boy enrolls in a school of wizardry, where he learns the
+            truth about himself, his family and the terrible evil that haunts
+            the magical world.
+          </p>
+        </div>
+      </div>
+*/
 function renderMovie(moviesDetail) {
   const poster = moviesDetail.Poster;
   const title = moviesDetail.Title;
