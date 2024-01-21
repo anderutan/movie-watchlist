@@ -244,3 +244,26 @@ body {
   font-size: 1.3rem;
   color: #a5a5a5;
 }
+
+.watchlist-container {
+  width: 80%;
+}
+
+.add-movie {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.5em;
+}
+
+.add-movie-icon {
+  height: 1.3em;
+}
+
+.add-movie p {
+  color: white;
+  margin: 0;
+  align-self: center;
+  font-size: 1rem;
+  text-decoration: none;
+}

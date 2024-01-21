@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.container');
   const divStartExploring = document.querySelector('.start-exploring');
   const movieSection = document.querySelectorAll('.movie-section');
+  const watchlistLinkBtn = document.querySelector('.watchlist-link');
 
   if (movieSection.length === 0) {
     divStartExploring.style.display = 'flex';
@@ -28,9 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (response === 'false') {
       container.innerHTML = `
-      <div class='search-false-container'>
-      <p class='search-false'>Unable to find what you're looking for. Please try another search.</p>
-      </div>
+      
       `;
     } else {
       container.textContent = '';
