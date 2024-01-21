@@ -141,10 +141,13 @@ body {
 
 /* if no movie on list then show up */
 .start-exploring {
-  display: none;
-  height: 20vh;
-  width: 20vw;
-  text-align: center;
+  height: 70vh;
+  width: 40vw;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .film-icon {
@@ -223,5 +226,21 @@ body {
 }
 
 .movie-plot {
+  color: #a5a5a5;
+}
+
+.search-false-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+}
+
+.search-false {
+  margin: auto;
+  width: 60%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3rem;
   color: #a5a5a5;
 }

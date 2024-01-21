@@ -1,124 +1,153 @@
-const searchBtn = document.querySelector('.search-btn');
-const searchName = document.getElementById('search-bar');
-const container = document.querySelector('.container');
+document.addEventListener('DOMContentLoaded', () => {
+  const searchBtn = document.querySelector('.search-btn');
+  const searchName = document.getElementById('search-bar');
+  const container = document.querySelector('.container');
+  const divStartExploring = document.querySelector('.start-exploring');
+  const movieSection = document.querySelectorAll('.movie-section');
 
-searchBtn.addEventListener('click', async () => {
-  const res = await fetch(
-    `http://www.omdbapi.com/?apikey=1d02aaa5&s=${searchName.value}`
-  );
-  const searchMovieResult = await res.json();
-  const searchMovieList = searchMovieResult.Search;
-
-  container.textContent = '';
-
-  for (let movie in searchMovieList) {
-    movieInfoDetail(searchMovieList[movie]);
+  if (movieSection.length === 0) {
+    divStartExploring.style.display = 'flex';
   }
-});
 
-async function movieInfoDetail(movie) {
-  const res = await fetch(
-    `http://www.omdbapi.com/?apikey=1d02aaa5&i=${movie.imdbID}`
-  );
-  const moviesDetail = await res.json();
+  searchBtn.addEventListener('click', handleMovieSearch);
 
-  renderMovie(moviesDetail);
-}
+  searchName.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      handleMovieSearch();
+    }
+  });
 
-/* Boilerplate
-<div class="movie-section">
-        <img
-          src="https://m.media-amazon.com/images/M/MV5BNmQ0ODBhMjUtNDRhOC00MGQzLTk5MTAtZDliODg5NmU5MjZhXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"
-          alt=""
-        />
-        <div class="movie-info-section">
-          <div class="movie-name-rate">
-            <h3 class="movie-title">Harry Potter and the Sorcerer's Stone</h3>
-            <p class="movie-rating"><img src="images/star.svg" alt="" /> 7.6</p>
-          </div>
-          <div class="movie-other-info">
-            <p class="movie-runtime">152 min</p>
-            <p class="movie-genre">Adventure, Family, Fantasy</p>
-            <a href="" class="watchlist-btn"
-              ><img src="images/add-circle.svg" alt="" />Add to watchlist</a
-            >
-          </div>
-          <p class="movie-plot">
-            An orphaned boy enrolls in a school of wizardry, where he learns the
-            truth about himself, his family and the terrible evil that haunts
-            the magical world.
-          </p>
-        </div>
+  async function handleMovieSearch() {
+    const res = await fetch(
+      `http://www.omdbapi.com/?apikey=1d02aaa5&s=${searchName.value}`
+    );
+    const searchMovieResult = await res.json();
+    const searchMovieList = searchMovieResult.Search;
+
+    const response = searchMovieResult.Response.toLowerCase();
+
+    if (response === 'false') {
+      container.innerHTML = `
+      <div class='search-false-container'>
+      <p class='search-false'>Unable to find what you're looking for. Please try another search.</p>
       </div>
-*/
-function renderMovie(moviesDetail) {
-  const poster = moviesDetail.Poster;
-  const title = moviesDetail.Title;
-  const rating = moviesDetail.imdbRating;
-  const time = moviesDetail.Runtime;
-  const genre = moviesDetail.Genre;
-  const plot = moviesDetail.Plot;
+      `;
+    } else {
+      container.textContent = '';
+      for (let movie in searchMovieList) {
+        movieInfoDetail(searchMovieList[movie]);
+      }
+    }
+  }
 
-  const movieSection = document.createElement('section');
-  movieSection.classList.add('movie-section');
+  async function movieInfoDetail(movie) {
+    const res = await fetch(
+      `http://www.omdbapi.com/?apikey=1d02aaa5&i=${movie.imdbID}`
+    );
+    const moviesDetail = await res.json();
 
-  const posterImg = document.createElement('img');
-  posterImg.src = poster;
+    renderMovie(moviesDetail);
+  }
 
-  const divMovieInfoSection = document.createElement('div');
-  divMovieInfoSection.classList.add('movie-info-section');
+  /* Boilerplate
+  <div class="movie-section">
+          <img
+            src="https://m.media-amazon.com/images/M/MV5BNmQ0ODBhMjUtNDRhOC00MGQzLTk5MTAtZDliODg5NmU5MjZhXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"
+            alt=""
+          />
+          <div class="movie-info-section">
+            <div class="movie-name-rate">
+              <h3 class="movie-title">Harry Potter and the Sorcerer's Stone</h3>
+              <p class="movie-rating"><img src="images/star.svg" alt="" /> 7.6</p>
+            </div>
+            <div class="movie-other-info">
+              <p class="movie-runtime">152 min</p>
+              <p class="movie-genre">Adventure, Family, Fantasy</p>
+              <a href="" class="watchlist-btn"
+                ><img src="images/add-circle.svg" alt="" />Add to watchlist</a
+              >
+            </div>
+            <p class="movie-plot">
+              An orphaned boy enrolls in a school of wizardry, where he learns the
+              truth about himself, his family and the terrible evil that haunts
+              the magical world.
+            </p>
+          </div>
+        </div>
+  */
+  function renderMovie(moviesDetail) {
+    const poster = moviesDetail.Poster;
+    const title = moviesDetail.Title;
+    const rating = moviesDetail.imdbRating;
+    const time = moviesDetail.Runtime;
+    const genre = moviesDetail.Genre;
+    const plot = moviesDetail.Plot;
+    const id = moviesDetail.imdbID;
 
-  const divMovieNameRate = document.createElement('div');
-  divMovieNameRate.classList.add('movie-name-rate');
+    const movieSection = document.createElement('section');
+    movieSection.classList.add('movie-section');
+    movieSection.setAttribute('id', id);
 
-  const movieTitle = document.createElement('h3');
-  movieTitle.classList.add('movie-title');
-  movieTitle.textContent = title;
+    const posterImg = document.createElement('img');
+    posterImg.src = poster;
 
-  const starIcon = document.createElement('img');
-  starIcon.src = 'images/star.svg';
+    const divMovieInfoSection = document.createElement('div');
+    divMovieInfoSection.classList.add('movie-info-section');
 
-  const movieRating = document.createElement('p');
-  movieRating.classList.add('movie-rating');
-  movieRating.appendChild(starIcon);
-  movieRating.insertAdjacentHTML('beforeend', `${rating}`);
+    const divMovieNameRate = document.createElement('div');
+    divMovieNameRate.classList.add('movie-name-rate');
 
-  const divMovieOtherInfo = document.createElement('div');
-  divMovieOtherInfo.classList.add('movie-other-info');
+    const movieTitle = document.createElement('h3');
+    movieTitle.classList.add('movie-title');
+    movieTitle.textContent = title;
 
-  const movieRuntime = document.createElement('p');
-  movieRuntime.classList.add('movie-runtime');
-  movieRuntime.textContent = time;
+    const starIcon = document.createElement('img');
+    starIcon.src = 'images/star.svg';
 
-  const movieGenre = document.createElement('p');
-  movieGenre.classList.add('movie-genre');
-  movieGenre.textContent = genre;
+    const movieRating = document.createElement('p');
+    movieRating.classList.add('movie-rating');
+    movieRating.appendChild(starIcon);
+    movieRating.insertAdjacentHTML('beforeend', `${rating}`);
 
-  const addToWatchlistBtn = document.createElement('img');
-  addToWatchlistBtn.src = 'images/add-circle.svg';
+    const divMovieOtherInfo = document.createElement('div');
+    divMovieOtherInfo.classList.add('movie-other-info');
 
-  const addToWatchlistLink = document.createElement('a');
-  addToWatchlistLink.classList.add('watchlist-btn');
-  addToWatchlistLink.appendChild(addToWatchlistBtn);
-  addToWatchlistLink.insertAdjacentHTML('beforeend', ' Add to watchlist');
+    const movieRuntime = document.createElement('p');
+    movieRuntime.classList.add('movie-runtime');
+    movieRuntime.textContent = time;
 
-  const moviePlot = document.createElement('p');
-  moviePlot.classList.add('movie-plot');
-  moviePlot.textContent = plot;
+    const movieGenre = document.createElement('p');
+    movieGenre.classList.add('movie-genre');
+    movieGenre.textContent = genre;
 
-  divMovieNameRate.appendChild(movieTitle);
-  divMovieNameRate.appendChild(movieRating);
+    const addToWatchlistBtn = document.createElement('img');
+    addToWatchlistBtn.src = 'images/add-circle.svg';
 
-  divMovieOtherInfo.appendChild(movieRuntime);
-  divMovieOtherInfo.appendChild(movieGenre);
-  divMovieOtherInfo.appendChild(addToWatchlistLink);
+    const addToWatchlistLink = document.createElement('a');
+    addToWatchlistLink.classList.add('watchlist-btn');
+    addToWatchlistLink.appendChild(addToWatchlistBtn);
+    addToWatchlistLink.insertAdjacentHTML('beforeend', ' Add to watchlist');
 
-  divMovieInfoSection.appendChild(divMovieNameRate);
-  divMovieInfoSection.appendChild(divMovieOtherInfo);
-  divMovieInfoSection.appendChild(moviePlot);
+    const moviePlot = document.createElement('p');
+    moviePlot.classList.add('movie-plot');
+    moviePlot.textContent = plot;
 
-  movieSection.appendChild(posterImg);
-  movieSection.appendChild(divMovieInfoSection);
+    divMovieNameRate.appendChild(movieTitle);
+    divMovieNameRate.appendChild(movieRating);
 
-  container.appendChild(movieSection);
-}
+    divMovieOtherInfo.appendChild(movieRuntime);
+    divMovieOtherInfo.appendChild(movieGenre);
+    divMovieOtherInfo.appendChild(addToWatchlistLink);
+
+    divMovieInfoSection.appendChild(divMovieNameRate);
+    divMovieInfoSection.appendChild(divMovieOtherInfo);
+    divMovieInfoSection.appendChild(moviePlot);
+
+    movieSection.appendChild(posterImg);
+    movieSection.appendChild(divMovieInfoSection);
+
+    container.appendChild(movieSection);
+  }
+
+  // setup add to watchlist button to local storage
+});
