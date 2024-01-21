@@ -143,7 +143,7 @@ body {
 .start-exploring {
   height: 70vh;
   width: 40vw;
-  display: none;
+  display: flex;
   gap: 0.5em;
   flex-direction: column;
   justify-content: center;
@@ -251,7 +251,13 @@ body {
 }
 
 .watchlist-container {
-  width: 80%;
+  height: 70vh;
+  width: 40vw;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .add-movie {

@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.container');
   const divStartExploring = document.querySelector('.start-exploring');
   const movieSection = document.querySelectorAll('.movie-section');
-  const watchlistSection = document.querySelector('.watchlist-section');
 
   if (movieSection.length === 0) {
     divStartExploring.style.display = 'flex';

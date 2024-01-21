@@ -1,23 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const divStartExploring = document.querySelector('.start-exploring');
-  const movieSection = document.querySelectorAll('.movie-section');
-  const watchlistSection = document.querySelector('.watchlist-section');
-  let idArray = JSON.parse(localStorage.getItem('imdbId')) || [];
+const divWatchlistContainer = document.querySelector('.watchlist-container');
+const watchlistSection = document.querySelector('.watchlist-section');
+let idArray = JSON.parse(localStorage.getItem('imdbId')) || [];
+const movieSection = document.querySelectorAll('.movie-section');
 
-  if (idArray.length === 0) {
-    divStartExploring.style.display = 'flex';
-  }
+async function movieInfoDetail(imdbID) {
+  const res = await fetch(
+    `http://www.omdbapi.com/?apikey=1d02aaa5&i=${imdbID}`
+  );
+  const moviesDetail = await res.json();
 
-  async function movieInfoDetail(imdbID) {
-    const res = await fetch(
-      `http://www.omdbapi.com/?apikey=1d02aaa5&i=${imdbID}`
-    );
-    const moviesDetail = await res.json();
+  renderMovie(moviesDetail, watchlistSection);
+}
 
-    renderMovie(moviesDetail, watchlistSection);
-  }
-
-  /* Boilerplate
+/* Boilerplate
   <div class="movie-section">
           <img
             src="https://m.media-amazon.com/images/M/MV5BNmQ0ODBhMjUtNDRhOC00MGQzLTk5MTAtZDliODg5NmU5MjZhXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg"
@@ -43,92 +38,102 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
   */
-  function renderMovie(moviesDetail, postContainer) {
-    const poster = moviesDetail.Poster;
-    const title = moviesDetail.Title;
-    const rating = moviesDetail.imdbRating;
-    const time = moviesDetail.Runtime;
-    const genre = moviesDetail.Genre;
-    const plot = moviesDetail.Plot;
-    const id = moviesDetail.imdbID;
+function renderMovie(moviesDetail, postContainer) {
+  const poster = moviesDetail.Poster;
+  const title = moviesDetail.Title;
+  const rating = moviesDetail.imdbRating;
+  const time = moviesDetail.Runtime;
+  const genre = moviesDetail.Genre;
+  const plot = moviesDetail.Plot;
+  const id = moviesDetail.imdbID;
 
-    const movieSection = document.createElement('section');
-    movieSection.classList.add('movie-section');
-    movieSection.setAttribute('id', id);
+  const movieSection = document.createElement('section');
+  movieSection.classList.add('movie-section');
+  movieSection.setAttribute('id', id);
 
-    const posterImg = document.createElement('img');
-    posterImg.src = poster;
+  const posterImg = document.createElement('img');
+  posterImg.src = poster;
 
-    const divMovieInfoSection = document.createElement('div');
-    divMovieInfoSection.classList.add('movie-info-section');
+  const divMovieInfoSection = document.createElement('div');
+  divMovieInfoSection.classList.add('movie-info-section');
 
-    const divMovieNameRate = document.createElement('div');
-    divMovieNameRate.classList.add('movie-name-rate');
+  const divMovieNameRate = document.createElement('div');
+  divMovieNameRate.classList.add('movie-name-rate');
 
-    const movieTitle = document.createElement('h3');
-    movieTitle.classList.add('movie-title');
-    movieTitle.textContent = title;
+  const movieTitle = document.createElement('h3');
+  movieTitle.classList.add('movie-title');
+  movieTitle.textContent = title;
 
-    const starIcon = document.createElement('img');
-    starIcon.src = 'images/star.svg';
+  const starIcon = document.createElement('img');
+  starIcon.src = 'images/star.svg';
 
-    const movieRating = document.createElement('p');
-    movieRating.classList.add('movie-rating');
-    movieRating.appendChild(starIcon);
-    movieRating.insertAdjacentHTML('beforeend', `${rating}`);
+  const movieRating = document.createElement('p');
+  movieRating.classList.add('movie-rating');
+  movieRating.appendChild(starIcon);
+  movieRating.insertAdjacentHTML('beforeend', `${rating}`);
 
-    const divMovieOtherInfo = document.createElement('div');
-    divMovieOtherInfo.classList.add('movie-other-info');
+  const divMovieOtherInfo = document.createElement('div');
+  divMovieOtherInfo.classList.add('movie-other-info');
 
-    const movieRuntime = document.createElement('p');
-    movieRuntime.classList.add('movie-runtime');
-    movieRuntime.textContent = time;
+  const movieRuntime = document.createElement('p');
+  movieRuntime.classList.add('movie-runtime');
+  movieRuntime.textContent = time;
 
-    const movieGenre = document.createElement('p');
-    movieGenre.classList.add('movie-genre');
-    movieGenre.textContent = genre;
+  const movieGenre = document.createElement('p');
+  movieGenre.classList.add('movie-genre');
+  movieGenre.textContent = genre;
 
-    const addToWatchlistBtn = document.createElement('img');
-    addToWatchlistBtn.src = 'images/add-circle.svg';
+  const addToWatchlistBtn = document.createElement('img');
+  addToWatchlistBtn.src = 'images/minus-circle.svg';
 
-    const addToWatchlistLink = document.createElement('a');
-    addToWatchlistLink.classList.add('watchlist-btn');
-    addToWatchlistLink.setAttribute('data-imdb-id', id);
-    addToWatchlistLink.appendChild(addToWatchlistBtn);
-    addToWatchlistLink.insertAdjacentHTML('beforeend', ' Add to watchlist');
+  const addToWatchlistLink = document.createElement('a');
+  addToWatchlistLink.classList.add('watchlist-btn');
+  addToWatchlistLink.setAttribute('data-imdb-id', id);
+  addToWatchlistLink.appendChild(addToWatchlistBtn);
+  addToWatchlistLink.insertAdjacentHTML('beforeend', ' Remove');
 
-    const moviePlot = document.createElement('p');
-    moviePlot.classList.add('movie-plot');
-    moviePlot.textContent = plot;
+  const moviePlot = document.createElement('p');
+  moviePlot.classList.add('movie-plot');
+  moviePlot.textContent = plot;
 
-    divMovieNameRate.appendChild(movieTitle);
-    divMovieNameRate.appendChild(movieRating);
+  divMovieNameRate.appendChild(movieTitle);
+  divMovieNameRate.appendChild(movieRating);
 
-    divMovieOtherInfo.appendChild(movieRuntime);
-    divMovieOtherInfo.appendChild(movieGenre);
-    divMovieOtherInfo.appendChild(addToWatchlistLink);
+  divMovieOtherInfo.appendChild(movieRuntime);
+  divMovieOtherInfo.appendChild(movieGenre);
+  divMovieOtherInfo.appendChild(addToWatchlistLink);
 
-    divMovieInfoSection.appendChild(divMovieNameRate);
-    divMovieInfoSection.appendChild(divMovieOtherInfo);
-    divMovieInfoSection.appendChild(moviePlot);
+  divMovieInfoSection.appendChild(divMovieNameRate);
+  divMovieInfoSection.appendChild(divMovieOtherInfo);
+  divMovieInfoSection.appendChild(moviePlot);
 
-    movieSection.appendChild(posterImg);
-    movieSection.appendChild(divMovieInfoSection);
+  movieSection.appendChild(posterImg);
+  movieSection.appendChild(divMovieInfoSection);
 
-    postContainer.appendChild(movieSection);
+  postContainer.appendChild(movieSection);
+}
+
+function loopTruArray() {
+  watchlistSection.textContent = '';
+  if (idArray.length === 0) {
+    divWatchlistContainer.style.display = 'flex';
+  } else {
+    idArray.forEach((id) => {
+      movieInfoDetail(id);
+    });
+    divWatchlistContainer.style.display = 'none';
   }
+}
 
-  // save movie id to localstorage
+// save movie id to localstorage
 
-  document.addEventListener('click', (e) => {
-    if (e.target.dataset.imdbId) {
-      const imdbId = e.target.dataset.imdbId;
-      idArray.push(imdbId);
-      localStorage.setItem('imdbId', JSON.stringify(idArray));
-    }
-  });
-
-  idArray.forEach((id) => {
-    movieInfoDetail(id);
-  });
+document.addEventListener('click', (e) => {
+  if (e.target.dataset.imdbId) {
+    const imdbId = e.target.dataset.imdbId;
+    idArray = idArray.filter((item) => item !== imdbId);
+    localStorage.setItem('imdbId', JSON.stringify(idArray));
+    loopTruArray();
+  }
 });
+
+loopTruArray();
