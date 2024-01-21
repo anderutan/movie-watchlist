@@ -1,42 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const searchBtn = document.querySelector('.search-btn');
-  const searchName = document.getElementById('search-bar');
-  const container = document.querySelector('.container');
   const divStartExploring = document.querySelector('.start-exploring');
   const movieSection = document.querySelectorAll('.movie-section');
   const watchlistSection = document.querySelector('.watchlist-section');
+  let idArray = JSON.parse(localStorage.getItem('imdbId')) || [];
 
-  if (movieSection.length === 0) {
+  if (idArray.length === 0) {
     divStartExploring.style.display = 'flex';
-  }
-
-  searchBtn.addEventListener('click', handleMovieSearch);
-
-  searchName.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      handleMovieSearch();
-    }
-  });
-
-  async function handleMovieSearch() {
-    const res = await fetch(
-      `http://www.omdbapi.com/?apikey=1d02aaa5&s=${searchName.value}`
-    );
-    const searchMovieResult = await res.json();
-    const searchMovieList = searchMovieResult.Search;
-
-    const response = searchMovieResult.Response.toLowerCase();
-
-    if (response === 'false') {
-      container.innerHTML = `
-      
-      `;
-    } else {
-      container.textContent = '';
-      for (let movie in searchMovieList) {
-        movieInfoDetail(searchMovieList[movie].imdbID);
-      }
-    }
   }
 
   async function movieInfoDetail(imdbID) {
@@ -45,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     const moviesDetail = await res.json();
 
-    renderMovie(moviesDetail, container);
+    renderMovie(moviesDetail, watchlistSection);
   }
 
   /* Boilerplate
@@ -150,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // save movie id to localstorage
-  let idArray = JSON.parse(localStorage.getItem('imdbId')) || [];
 
   document.addEventListener('click', (e) => {
     if (e.target.dataset.imdbId) {
