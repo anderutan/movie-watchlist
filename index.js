@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.container');
   const divStartExploring = document.querySelector('.start-exploring');
   const movieSection = document.querySelectorAll('.movie-section');
-  const watchlistLinkBtn = document.querySelector('.watchlist-link');
 
   if (movieSection.length === 0) {
     divStartExploring.style.display = 'flex';
@@ -124,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addToWatchlistLink = document.createElement('a');
     addToWatchlistLink.classList.add('watchlist-btn');
+    addToWatchlistLink.setAttribute('data-imdb-id', id);
     addToWatchlistLink.appendChild(addToWatchlistBtn);
     addToWatchlistLink.insertAdjacentHTML('beforeend', ' Add to watchlist');
 
@@ -148,5 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(movieSection);
   }
 
-  // setup add to watchlist button to local storage
+  // save movie id to localstorage
+  let idArray = JSON.parse(localStorage.getItem('imdbId')) || [];
+
+  document.addEventListener('click', (e) => {
+    if (e.target.dataset.imdbId) {
+      const imdbId = e.target.dataset.imdbId;
+      idArray.push(imdbId);
+      localStorage.setItem('imdbId', JSON.stringify(idArray));
+    }
+  });
 });
